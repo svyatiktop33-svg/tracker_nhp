@@ -1,0 +1,38 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:   # позволяет запускать сборку вручную
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip python3-dev build-essential git autoconf automake \
+            libtool libffi-dev cmake libssl-dev libltdl-dev openjdk-11-jdk zip unzip
+
+      - name: Install Buildozer
+        run: pip install buildozer
+
+      - name: Build APK
+        run: |
+          export BUILDOZER_ALLOW_ROOT=1
+          buildozer android debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jawtracker-apk
+          path: bin/*.apk
