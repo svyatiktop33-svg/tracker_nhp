@@ -10,7 +10,7 @@ android.api = 30
 android.minapi = 24
 android.ndk = 28c
 android.arch = arm64-v8a
-android.sdk_path = /usr/local/android-sdk
+android.accept_sdk_license = yes
 
 [buildozer]
 log_level = 2
