@@ -28,7 +28,7 @@ jobs:
       - name: Build APK
         run: |
           export BUILDOZER_ALLOW_ROOT=1
-          export ANDROID_SDK_ACCEPT_LICENSES=1
+          export _JAVA_OPTIONS="-Xmx3g"
           buildozer android debug
 
       - name: Upload APK
