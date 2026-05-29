@@ -25,19 +25,10 @@ jobs:
       - name: Install Buildozer
         run: pip install buildozer
 
-      - name: Accept Android SDK licenses
-        run: |
-          # Создаём папку для SDK и принимаем лицензии
-          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
-          mkdir -p $ANDROID_SDK_ROOT
-          cd $ANDROID_SDK_ROOT
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-          unzip -q commandlinetools-linux-11076708_latest.zip
-          yes | ./cmdline-tools/bin/sdkmanager --licenses --sdk_root=$ANDROID_SDK_ROOT
-
       - name: Build APK
         run: |
           export BUILDOZER_ALLOW_ROOT=1
+          export ANDROID_SDK_ACCEPT_LICENSES=1
           buildozer android debug
 
       - name: Upload APK
