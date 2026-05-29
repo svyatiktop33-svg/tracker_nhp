@@ -19,17 +19,19 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y python3-pip python3-dev build-essential git autoconf automake \
-            libtool libffi-dev cmake libssl-dev libltdl-dev openjdk-11-jdk zip unzip
+          sudo apt install -y python3-pip python3-dev build-essential git \
+            autoconf automake libtool libffi-dev cmake libssl-dev libltdl-dev \
+            openjdk-11-jdk zip unzip
 
       - name: Install Buildozer
         run: pip install buildozer
 
       - name: Build APK
-        run: |
-          export BUILDOZER_ALLOW_ROOT=1
-          export _JAVA_OPTIONS="-Xmx3g"
-          buildozer android debug
+        env:
+          BUILDOZER_ALLOW_ROOT: '1'
+          ANDROID_SDK_ACCEPT_LICENSES: '1'
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
