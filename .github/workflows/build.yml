@@ -22,6 +22,18 @@ jobs:
           sudo apt install -y python3-pip python3-dev build-essential git autoconf automake \
             libtool libffi-dev cmake libssl-dev libltdl-dev openjdk-11-jdk zip unzip
 
+      - name: Setup Android SDK and accept licenses
+        run: |
+          export ANDROID_SDK_ROOT=/usr/local/android-sdk
+          sudo mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          cd $ANDROID_SDK_ROOT/cmdline-tools
+          sudo wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          sudo unzip -q commandlinetools-linux-11076708_latest.zip
+          # переименовываем распакованную папку в "latest" (стандартное расположение)
+          sudo mv cmdline-tools latest
+          sudo chown -R $USER:$USER $ANDROID_SDK_ROOT
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses --sdk_root=$ANDROID_SDK_ROOT
+
       - name: Install Buildozer
         run: pip install buildozer
 
